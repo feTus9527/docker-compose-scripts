@@ -1,0 +1,7 @@
+services:
+  redis-standalone:
+    image: redis:${VERSION:-latest}
+    container_name: redis-stanalone
+    restart: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"

@@ -1,0 +1,12 @@
+services:
+  postgres-standalone:
+    image: postgres:${VERSION:-latest}
+    container_name: postgres-standalone
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - 5432:5432
+    volumes:
+      - "${VOLUME_BASE_DIR:-./volume}/data:/var/lib/postgresql/data"
