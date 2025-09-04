@@ -1,0 +1,13 @@
+services:
+  mongo-standalone:
+    image: mongo:${VERSION:-latest}
+    container_name: mongo-standlone
+    ports:
+      - "${EXPOSED_PORT:-27017}:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-root}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-root}
+    volumes:
+      - "${VOLUME_BASE_DIR:-./volume}/data:/data/db"
+    command:
+      - "--auth"
