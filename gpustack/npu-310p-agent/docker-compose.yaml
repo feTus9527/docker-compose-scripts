@@ -1,0 +1,30 @@
+services:
+  gpustack-agent:
+    image: gpustack/gpustack:${VERSION:-latest}
+    container_name: gpustack-agent
+    network_mode: host
+    ipc: host
+    command: [
+      "--port", "${GPUSTACK_PORT:-8080}",
+      "--server-url", "${MASTER_URL:-}",
+      "--token", "${MASTER_TOKEN:-}"
+    ]
+    volumes:
+      - ${VOLUME_BASE_DIR:-./volume}:/var/lib/gpustack
+      - /usr/local/dcmi:/usr/local/dcmi
+      - /usr/local/bin/npu-smi:/usr/local/bin/npu-smi
+      - /usr/local/Ascend/driver/lib64:/usr/local/Ascend/driver/lib64
+      - /usr/local/Ascend/driver/version.info:/usr/local/Ascend/driver/version.info
+      - /etc/ascend_install.info:/etc/ascend_install.info
+    devices:
+      - /dev/davinci0
+      - /dev/davinci1
+      - /dev/davinci2
+      - /dev/davinci3
+      - /dev/davinci4
+      - /dev/davinci5
+      - /dev/davinci6
+      - /dev/davinci7
+      - /dev/davinci_manager
+      - /dev/devmm_svm
+      - /dev/hisi_hdc

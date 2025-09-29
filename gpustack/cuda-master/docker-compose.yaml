@@ -4,8 +4,5 @@ services:
     container_name: gpustack-master
     network_mode: host
     ipc: host
-    command: [
-      "--port", "${GPUSTACK_PORT:-8080}"
-    ]
     volumes:
       - "${VOLUME_BASE_DIR:-./volume}:/var/lib/gpustack"
