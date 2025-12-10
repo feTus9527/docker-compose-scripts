@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+  gpustack-server:
+    image: gpustack/gpustack:${VERSION:-v2.0.1}
+    container_name: gpustack-server
+    restart: unless-stopped
+    privileged: true
+    ports:
+      # UI & API
+      - "${PORT_HTTP:-80}:80"
+      - "${PORT_HTTPS:-443}:443"
+      # server metrics
+      - "${PORT_METRICS:-10161}:10161"
+      # server internal API
+      - "${PORT_INTERNAL:-8080}:8080"
+      # embedded postgres
+      - "${PORT_POSTGRES:-5432}:5432"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${VOLUME_BASE_DIR:-./volume}:/var/lib/gpustack

@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  gpustack-worker:
+    image: gpustack/gpustack:${VERSION:-v2.0.1}
+    container_name: gpustack-worker
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    ipc: host
+    # 以下是worker运行需要的端口，使用host模式时不用开启，建议部署前提前检查端口占用让开以下端口段
+    # ports:
+    #   # worker port
+    #   - "10150:10150"
+    #   # worker metrics
+    #   - "10151:10151"
+    #   # worker internal API
+    #   - "10152:8080"
+    #   # inference svc
+    #   - "40000-40063:40000-40063"
+    #   # ray svc (for distributed vllm)
+    #   - "41000-41999:41000-41999"
+    command: [
+      "--server-url", "${SERVER_URL}",
+      "--token", "${SERVER_TOKEN}",
+      "--advertise-address", "${ADVERTISE_ADDRESS}"
+    ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${VOLUME_BASE_DIR:-./volume}:/var/lib/gpustack
+    # Note:
+    # For Ascend or other platform, change to its proper configuration
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
